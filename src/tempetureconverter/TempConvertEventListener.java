@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,16 +34,19 @@ public class TempConvertEventListener implements ActionListener {
         TempConverterService tcs = new TempConverterService();
 
         if (window.getRdoFahrenheit().isSelected()) {
-            
-                temperature = Double.valueOf(window.getTxtInput().getText());
-                window.getLblNewTemp().setText("" + df.format(tcs.convertTempFromFerienhight(temperature)));
+            try {
+                
+                window.getLblNewTemp().setText("" + df.format(tcs.convertTempFromFerienhight(Double.valueOf(window.getTxtInput().getText()))));
+            } catch(Exception e){
+                 JOptionPane.showMessageDialog(window, "You Did Not Enter A Number.");
+                 return;
+            }
         } else {
             try {
-                temperature = Double.valueOf(window.getTxtInput().getText());
-                newTemperature = temperature * 9 / 5 + 32;
-                window.getLblNewTemp().setText("" + df.format(tcs.convertTempFromCelsius(temperature)));
-            } catch (IllegalArgumentException e) {
-                window.getLblNewTemp().setText("You Did Not Enter A Number");
+               
+                window.getLblNewTemp().setText("" + df.format(tcs.convertTempFromCelsius(Double.valueOf(window.getTxtInput().getText()))));
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(window, "You Did Not Enter A Number.");
                 return;
             }
         }
